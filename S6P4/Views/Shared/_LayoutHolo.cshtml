@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title · Taller Semana 6</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/Content/holo.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <main class="contenedor">
+        <div class="dispositivo">
+            <div class="anillo" aria-hidden="true"></div>
+
+            <header class="dv-top">
+                <div class="sensor" aria-hidden="true"></div>
+                <div class="leds" aria-hidden="true"><span class="led a"></span><span class="led b"></span><span class="led c"></span></div>
+                <a href="@Url.Action("Index", "StarWars")" class="dv-titulo">
+                    Taller Semana 6
+                    <small>ASP.NET FRAMEWORK · SWAPI.TECH</small>
+                </a>
+            </header>
+
+            <div class="dv-cuerpo">
+                @RenderBody()
+            </div>
+
+            <div class="dv-pie">Taller Semana 6 - Luis Fernando Aguas Bucheli - Profe Geek EC</div>
+        </div>
+    </main>
+</body>
+</html>

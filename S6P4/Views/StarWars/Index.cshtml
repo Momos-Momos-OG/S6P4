@@ -1,0 +1,74 @@
+﻿@model S6P4.Models.SwListaViewModel
+@using S6P4.Models
+@{
+    ViewBag.Title = "Personajes";
+    Layout = "~/Views/Shared/_LayoutHolo.cshtml";
+    int delay = 0;
+}
+
+<aside class="lado">
+    <div class="radar" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <form class="mini-pantalla" action="@Url.Action("Index", "StarWars")" method="get">
+        <p class="etq">ESCÁNER</p>
+        <input class="campo" type="text" name="q" value="@Model.Q" placeholder="Nombre (ej. luke)"
+               aria-label="Buscar personaje" autocomplete="off" />
+        <button type="submit" class="btn cian">ESCANEAR</button>
+        @if (!string.IsNullOrEmpty(Model.Q))
+        {
+            <a class="btn" style="margin-top:10px" href="@Url.Action("Index", "StarWars")">VER TODOS</a>
+        }
+    </form>
+
+    @if (Model.TotalPaginas > 1)
+    {
+        <nav class="mini-pantalla" aria-label="Paginación">
+            <p class="etq">PÁGINA</p>
+            <p class="pag-estado">@Model.Pagina / @Model.TotalPaginas</p>
+            <div class="pag-botones">
+                <a class="btn @(Model.Pagina <= 1 ? "gris" : "")"
+                   href="@Url.Action("Index", "StarWars", new { pagina = Model.Pagina - 1 })">◀</a>
+                <a class="btn @(Model.Pagina >= Model.TotalPaginas ? "gris" : "")"
+                   href="@Url.Action("Index", "StarWars", new { pagina = Model.Pagina + 1 })">▶</a>
+            </div>
+        </nav>
+    }
+
+    <div class="mandos" aria-hidden="true">
+        <div class="dial"></div>
+        <div class="pulsadores"><i></i><i></i><i></i><i></i></div>
+    </div>
+</aside>
+
+<section class="vidrio">
+    <p class="etq">ARCHIVO GALÁCTICO @(Model.Total > 0 ? "· " + Model.Total + " REGISTROS" : "")</p>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alerta error">⚠ @Model.Error</div>
+    }
+    else if (!Model.Personas.Any())
+    {
+        <div class="vacio">No hay resultados para esa búsqueda.</div>
+    }
+
+    <div class="grid">
+        @foreach (var p in Model.Personas)
+        {
+            var props = p.Properties;
+            <a class="card @("g-" + props.GeneroClase)" href="@Url.Action("Detalle", "StarWars", new { id = p.Uid })" style="animation-delay:@(delay)ms">
+                <div class="arte">
+                    <span class="num">#@p.Uid</span>
+                    <div class="holo">@props.Iniciales</div>
+                </div>
+                <div class="info">
+                    <h2 class="nombre">@props.Name</h2>
+                    <div class="chips" style="justify-content:center">
+                        <span class="chip">@StarWarsHelper.GeneroEs(props.Gender)</span>
+                    </div>
+                </div>
+            </a>
+            delay += 40;
+        }
+    </div>
+</section>

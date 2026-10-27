@@ -1,0 +1,69 @@
+﻿@model S6P4.Models.SwDetalleViewModel
+@using S6P4.Models
+@{
+    Layout = "~/Views/Shared/_LayoutHolo.cshtml";
+    var p = Model.Persona != null ? Model.Persona.Properties : null;
+    ViewBag.Title = p != null ? p.Name : "No encontrado";
+}
+
+@if (p == null)
+{
+    <aside class="lado">
+        <div class="radar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <a class="btn" href="@Url.Action("Index", "StarWars")">◀ VOLVER</a>
+    </aside>
+    <section class="vidrio">
+        <div class="alerta error">⚠ @(Model.Error ?? "Personaje no encontrado.")</div>
+    </section>
+}
+else
+{
+    <aside class="lado">
+        <div class="vidrio retrato @("g-" + p.GeneroClase)">
+            <span class="numero">#@Model.Persona.Uid</span>
+            <div class="holo grande">@p.Iniciales</div>
+        </div>
+
+        <div class="chips @("g-" + p.GeneroClase)" style="justify-content:center">
+            <span class="chip">@StarWarsHelper.GeneroEs(p.Gender)</span>
+        </div>
+
+        <div class="mandos">
+            <div class="dial" aria-hidden="true"></div>
+            <a class="btn" style="width:auto" href="@Url.Action("Index", "StarWars")">◀ VOLVER</a>
+        </div>
+    </aside>
+
+    <section class="vidrio info-der @("g-" + p.GeneroClase)">
+        <h1>@p.Name</h1>
+
+        <div class="datos">
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.Height, "cm")</b><span>Altura</span></div>
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.Mass, "kg")</b><span>Masa</span></div>
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.BirthYear, null)</b><span>Nacimiento</span></div>
+        </div>
+
+        <div class="datos">
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.HairColor, null)</b><span>Cabello</span></div>
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.SkinColor, null)</b><span>Piel</span></div>
+            <div class="dato"><b>@StarWarsHelper.ConUnidad(p.EyeColor, null)</b><span>Ojos</span></div>
+        </div>
+
+        @if (Model.Planeta != null)
+        {
+            var pl = Model.Planeta;
+            <h3>PLANETA DE ORIGEN</h3>
+            <div class="planeta">
+                <h4>@pl.Name</h4>
+                <dl>
+                    <div><dt>Clima</dt><dd>@StarWarsHelper.ConUnidad(pl.Climate, null)</dd></div>
+                    <div><dt>Terreno</dt><dd>@StarWarsHelper.ConUnidad(pl.Terrain, null)</dd></div>
+                    <div><dt>Población</dt><dd>@StarWarsHelper.ConUnidad(pl.Population, null)</dd></div>
+                    <div><dt>Diámetro</dt><dd>@StarWarsHelper.ConUnidad(pl.Diameter, "km")</dd></div>
+                    <div><dt>Gravedad</dt><dd>@StarWarsHelper.ConUnidad(pl.Gravity, null)</dd></div>
+                    <div><dt>Agua superficial</dt><dd>@StarWarsHelper.ConUnidad(pl.SurfaceWater, "%")</dd></div>
+                </dl>
+            </div>
+        }
+    </section>
+}
